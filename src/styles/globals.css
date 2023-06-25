@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.wide-width {
+    width: 500px;
+}
+
+.center-element {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.active-link::before {
+    content: " ";
+    width: 100%;
+    padding: 20px;
+    border-top: 4px solid #a8b1ff;
+    border-radius: 5px;
+    position: absolute;
+    bottom: -51px;
+}
+
+.hover-link-navbar {
+    height: calc(100% - 3px);
+    position: relative;
+}
+
+.hover-link-navbar:hover::before {
+    content: " ";
+    width: 100%;
+    padding: 20px;
+    border-top: 4px solid #a8b1ff;
+    border-radius: 5px;
+    position: absolute;
+    bottom: -51px;
+}
+
+.btn {
+    margin: 0 5px;
+    padding: 10px 5px;
+    border-radius: 10px;
+    width: 80px;
+}
+
+.bg-hero-section {
+    background-image: url(/images/bg-hero-section.webp);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.bg-login-page {
+    background-image: url(/images/bg-login.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
