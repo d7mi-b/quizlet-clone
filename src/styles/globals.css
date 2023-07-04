@@ -10,6 +10,17 @@
     -webkit-box-sizing: border-box;
 }
 
+body {
+    color: #334155;
+    background-color: #f1f5f9;
+}
+
+.page {
+    min-height: 100dvb;
+    width: 90%;
+    margin: 0 auto;
+}
+
 .wide-width {
     width: 500px;
 }
@@ -28,7 +39,7 @@
     border-top: 4px solid #a8b1ff;
     border-radius: 5px;
     position: absolute;
-    bottom: -51px;
+    bottom: -47px;
 }
 
 .hover-link-navbar {
@@ -43,7 +54,7 @@
     border-top: 4px solid #a8b1ff;
     border-radius: 5px;
     position: absolute;
-    bottom: -51px;
+    bottom: -47px;
 }
 
 .btn {
@@ -64,4 +75,38 @@
     background-image: url(/images/bg-login.png);
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.editTerm {
+    position: relative;
+}
+
+.editTermDropDown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #f1f5f9;
+    padding: 20px;
+    width: 350px;
+    border-radius: 10px;
+    z-index: 30;
+}
+
+.editTerm:hover .editTermDropDown { 
+    display: block;
+}
+
+.createBtn {
+    display: none;
+}
+
+@media not all and (min-width: 768px) {
+    .createBtn {
+        display: flex;
+    }
+
+    .wide-width {
+        width: 100%;
+    }
 }

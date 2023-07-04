@@ -2,17 +2,43 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
-    previewFeatures = ["jsonProtocol"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model User {
+  id                  String     @id
+  DOB                 DateTime
+  email               String     @unique
+  username            String     @unique
+  password            String
+  avatar              String?
+  userCreatedStudySet StudySet[] @relation("userCreatedStudySet")
+  studySets           StudySet[]
+}
+
+model StudySet {
+  id                  String  @id @default(uuid())
+  title               String
+  description         String?
+  userCreatedStudySet User    @relation("userCreatedStudySet", fields: [userCreated], references: [id], onDelete: Cascade)
+  userCreated         String
+  terms               Term[]
+  students            User[]
+}
+
+model Term {
+  id         String   @id @default(uuid())
+  term       String
+  definition String
+  order      Int
+  image      String?
+  studySet   StudySet @relation(fields: [studySetID], references: [id], onDelete: Cascade)
+  studySetID String
+
+  @@unique([id, order])
 }

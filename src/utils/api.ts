@@ -10,6 +10,12 @@ import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 import { type AppRouter } from "~/server/api/root";
 
+let token: string;
+
+export const setToken = (newToken: string) => {
+  token = newToken;
+}
+
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
@@ -33,13 +39,13 @@ export const api = createTRPCNext<AppRouter>({
        * @see https://trpc.io/docs/links
        */
       links: [
-        loggerLink({
-          enabled: (opts) =>
-            process.env.NODE_ENV === "development" ||
-            (opts.direction === "down" && opts.result instanceof Error),
-        }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers: () => {
+            return {
+              Authorization: `Bearer ${token}`
+            };
+          },
         }),
       ],
     };

@@ -1,14 +1,10 @@
-import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Login from "~/components/Login";
 import Navbar from "~/components/Navbar";
 import Signup from "~/components/Signup";
-import { api } from "~/utils/api";
+
 
 export default function Home() {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
-  const [login, setLogin] = useState<boolean>(false);
 
   useEffect(() => {
     const btnLogin: HTMLElement | null = document.getElementById("btnLogin");
@@ -73,17 +69,16 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>Quizlet Clone</title>
-        <meta name="description" content="Quizlet Clone" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className="min-h-screen bg-slate-50 text-slate-700">
-        <Navbar />
+      <main className="w-full min-h-screen">
 
         {/* Hero section */}
         <article className="bg-hero-section min-h-screen flex flex-col justify-center px-8">
-          <header className="text-slate-100 w-2/5 relative left-28">
+          <header 
+            className={`
+              text-slate-100 w-2/5 relative left-28 
+              max-lg:w-full max-lg:left-0 max max-lg:text-center
+            `}
+          >
             <h1 className="font-bold text-4xl leading-relaxed">The best digital flashcards and study tools</h1>
             <p className="text-lg my-8">
               Join over 60 million students using Quizlet’s science-backed flashcards, practice tests and expert solutions to improve their grades and reach their goals.
