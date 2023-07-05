@@ -11,6 +11,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import jwt from 'jsonwebtoken'
 import { OptionsType, TokenValid } from "~/types";
+import { env } from "~/env.mjs";
 
 /**
  * 1. CONTEXT
@@ -87,7 +88,7 @@ export const createTRPCRouter = t.router;
 
 
 // Middelware
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY as string;
+const JWT_SECRET_KEY: string = env.JWT_SECRET_KEY;
 
 export const isAuthorized = t.middleware(async ({ ctx, next }) => {
   const { req } = ctx;

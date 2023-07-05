@@ -5,10 +5,11 @@ import jwt from 'jsonwebtoken'
 import { TRPCError } from "@trpc/server";
 import { User } from "~/types";
 import { PrismaClient } from '@prisma/client';
+import { env } from '~/env.mjs';
 
 const prisma = new PrismaClient()
 
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY as string;
+const JWT_SECRET_KEY: string = env.JWT_SECRET_KEY;
 
 const createToken = (id: string) => {
     const token: string = jwt.sign({ id }, JWT_SECRET_KEY);
