@@ -15,7 +15,6 @@ let token: string;
 
 export const setToken = (newToken: string) => {
   token = newToken;
-  console.log(token)
 }
 
 const getBaseUrl = () => {

@@ -53,8 +53,8 @@ export function AuthProvider({ children }: Props) {
         const user: User = JSON.parse(localStorage.getItem('user-Quizlet') || '{}'); //eslint-disable-line
 
         if (user.token) {
-            dispatch({type: 'LOGIN', payload: user});
             setToken(user.token)
+            dispatch({type: 'LOGIN', payload: user});
         }
     }, [])
 
