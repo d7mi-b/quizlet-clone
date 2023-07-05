@@ -13,7 +13,8 @@ export const env = createEnv({
     UPLOADTHING_APP_ID: z.string(),
     UPLOADTHING_SECRET: z.string(),
     VERCEL_URL: z.string(),
-    PORT: z.string()
+    PORT: z.string(),
+    CI: z.string(),
   },
 
   /**
@@ -36,7 +37,8 @@ export const env = createEnv({
     UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
     UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
     VERCEL_URL: process.env.VERCEL_URL,
-    PORT: process.env.PORT
+    PORT: process.env.PORT,
+    CI: process.env.CI
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
