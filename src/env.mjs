@@ -9,6 +9,9 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     NODE_ENV: z.enum(["development", "test", "production"]),
+    JWT_SECRET_KEY: z.string(),
+    UPLOADTHING_APP_ID: z.string(),
+    UPLOADTHING_SECRET: z.string()
   },
 
   /**
@@ -27,6 +30,9 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
+    JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
+    UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
+    UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
