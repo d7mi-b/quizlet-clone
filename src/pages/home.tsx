@@ -2,9 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import CreatedStudySet from "~/components/CreatedStudySet";
 import Loading from "~/components/Loading";
-import Navbar from "~/components/Navbar";
 import RecentStudySet from "~/components/RecentStudySet";
-import { StudySet, User } from "~/types";
 import { api } from "~/utils/api";
 
 

@@ -1,68 +1,67 @@
 import { useEffect } from "react";
 import Login from "~/components/Login";
-import Navbar from "~/components/Navbar";
 import Signup from "~/components/Signup";
 
 
 export default function Home() {
 
   useEffect(() => {
-    const btnLogin: HTMLElement | null = document.getElementById("btnLogin");
-    const loginPage: HTMLElement | null = document.getElementById("loginPage");
-    const btnCloseLoginPage: HTMLElement | null = document.getElementById("btnCloseLoginPage")
+    const btnLogin = document.getElementById("btnLogin") as HTMLButtonElement;
+    const loginPage = document.getElementById("loginPage") as HTMLElement;
+    const btnCloseLoginPage = document.getElementById("btnCloseLoginPage") as HTMLElement;
 
     btnLogin?.addEventListener('click', () => {
-      loginPage!.style.display = 'flex';
+      loginPage.style.display = 'flex';
     })
 
     btnCloseLoginPage?.addEventListener('click', () => {
-      loginPage!.style.display = 'none';
+      loginPage.style.display = 'none';
     })
 
-    const btnSignup: HTMLElement | null = document.getElementById("btnSignup");
-    const signupPage: HTMLElement | null = document.getElementById("signupPage");
-    const btnCloseSignupPage: HTMLElement | null = document.getElementById("btnCloseSignupPage");
+    const btnSignup = document.getElementById("btnSignup") as HTMLButtonElement;
+    const signupPage = document.getElementById("signupPage")as HTMLElement ;
+    const btnCloseSignupPage = document.getElementById("btnCloseSignupPage") as HTMLElement;
 
     btnSignup?.addEventListener('click', () => {
-      signupPage!.style.display = 'flex';
+      signupPage.style.display = 'flex';
     })
 
     btnCloseSignupPage?.addEventListener('click', () => {
-      signupPage!.style.display = 'none';
+      signupPage.style.display = 'none';
     })
 
-    const btnSignupHeroSec: HTMLElement | null = document.getElementById('btnSignupHeroSec');
+    const btnSignupHeroSec = document.getElementById('btnSignupHeroSec') as HTMLElement;
 
     btnSignupHeroSec?.addEventListener('click', () => {
-      signupPage!.style.display = 'flex';
+      signupPage.style.display = 'flex';
     })
 
-    const btnSignupFromLoginPage: HTMLElement | null = document.getElementById('btnSignupFromLoginPage');
+    const btnSignupFromLoginPage = document.getElementById('btnSignupFromLoginPage') as HTMLElement;
 
     btnSignupFromLoginPage?.addEventListener('click', () => {
-      signupPage!.style.display = 'flex';
-      loginPage!.style.display = 'none';
+      signupPage.style.display = 'flex';
+      loginPage.style.display = 'none';
     })
 
-    const btnCreateAccount: HTMLElement | null = document.getElementById('btnCreateAccount');
+    const btnCreateAccount = document.getElementById('btnCreateAccount') as HTMLElement;
 
     btnCreateAccount?.addEventListener('click', () => {
-      signupPage!.style.display = 'flex';
-      loginPage!.style.display = 'none';
+      signupPage.style.display = 'flex';
+      loginPage.style.display = 'none';
     })
 
-    const btnLoginFromSignupPage: HTMLElement | null = document.getElementById('btnLoginFromSignupPage');
+    const btnLoginFromSignupPage = document.getElementById('btnLoginFromSignupPage') as HTMLElement;
 
     btnLoginFromSignupPage?.addEventListener('click', () => {
-      signupPage!.style.display = 'none';
-      loginPage!.style.display = 'flex';
+      signupPage.style.display = 'none';
+      loginPage.style.display = 'flex';
     })
 
-    const btnHaveAccount: HTMLElement | null = document.getElementById('btnHaveAccount');
+    const btnHaveAccount = document.getElementById('btnHaveAccount') as HTMLElement;
 
     btnHaveAccount?.addEventListener('click', () => {
-      signupPage!.style.display = 'none';
-      loginPage!.style.display = 'flex';
+      signupPage.style.display = 'none';
+      loginPage.style.display = 'flex';
     })
     
   }, [])

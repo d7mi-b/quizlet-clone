@@ -4,9 +4,8 @@ import { Term } from '@prisma/client';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Loading from '~/components/Loading';
-import { StudySet } from '~/types';
 import { api } from '~/utils/api';
 import Flashcards from '~/components/Flashcards';
 import Learn from '~/components/Learn';
@@ -16,13 +15,13 @@ const StudySetPage = () => {
 
     const studySetID: string | string[] = router.query.studySet ? router.query.studySet : '';
 
-    const { data, isLoading, error} = api.studySet.getOne.useQuery({
+    const { data, isLoading } = api.studySet.getOne.useQuery({
         id: typeof studySetID === 'string' ? studySetID : ' '
     });
 
     const { mutate: deleteStudySet } = api.studySet.delete.useMutation({
-        onSuccess: () => {
-            router.replace('/home');
+        onSuccess: async () => {
+            await router.replace('/home');
         }
     });
 
@@ -30,7 +29,7 @@ const StudySetPage = () => {
         studySetID: typeof studySetID === 'string' ? studySetID : "" 
     })
 
-    const { mutate: study, isLoading: loadingStudy, error: errorStudy } = api.user.study.useMutation({
+    const { mutate: study, isLoading: loadingStudy } = api.user.study.useMutation({
         onSuccess: () => {
             const btnStudy = document.getElementById('btnstudy');
             if (btnStudy)
@@ -39,12 +38,6 @@ const StudySetPage = () => {
     });
 
     const [test, setTest] = useState<string>('Flashcards');
-
-
-
-    useEffect(() => {
-
-    }, [data, checkStudy])
 
     if (isLoading)
         return (

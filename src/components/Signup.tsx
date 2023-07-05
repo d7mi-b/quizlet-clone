@@ -14,10 +14,10 @@ const Signup = () => {
     const [password, setPassword] = useState<string>('');
     const [policy, setPolicy] = useState<boolean>(false);
 
-    const handelSignUp = async (e: any) => {
+    const handelSignUp = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        await signup(username, email, password, DOB);
+        signup(username, email, password, DOB);
     }
     
     return (
@@ -121,7 +121,7 @@ const Signup = () => {
                             onChange={e => setPolicy(e.target.checked)} 
                         />
                         <label htmlFor="privacy" className="text-center text-slate-500 mx-2 text-md">
-                            I accept Quizlet's <Link href='/' className="font-semibold text-sky-400 hover:text-yellow-500">Terms of Service </Link>
+                            I accept Quizlet&apos;s <Link href='/' className="font-semibold text-sky-400 hover:text-yellow-500">Terms of Service </Link>
                             and <Link href='/' className="font-semibold text-sky-400 hover:text-yellow-500">Privacy Policy</Link>
                         </label>
                     </section>

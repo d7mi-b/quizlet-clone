@@ -1,19 +1,21 @@
 import { faFile, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Auth } from "~/context/AuthContext";
 import { useAuth } from "~/hooks/useAuth";
 import { useLogout } from "~/hooks/useLogout";
 import { api } from "~/utils/api";
 
 const Navbar = () => {
-    const { user } = useAuth();
+    const { user } = useAuth() as Auth;
     const { logout } = useLogout();
 
     const [title, setTitle] = useState<string>('');
     const [searchSection, setSearchSection] = useState<boolean>(false);
 
-    const { mutate: search, data: studySet, error } = api.studySet.search.useMutation();
+    const { mutate: search, data: studySet } = api.studySet.search.useMutation();
 
     useEffect(() => {
         const btnCreate = document.getElementById('btnCreate');
@@ -33,9 +35,7 @@ const Navbar = () => {
             search({ title })
         }
 
-        // console.log(user.avatar)
-
-    }, [title])
+    }, [title, search])
     
     return (
         <nav 
@@ -46,10 +46,12 @@ const Navbar = () => {
         >
             <section className="logo w-24 center-element sm:w-32 max-sm:w-36 max-md:w-14 max-lg:w-64 max-lg:mx-2">
                 <Link href='/'>
-                    <img 
+                    <Image 
                         src="/images/Quizlet-Logo.png" 
                         alt="Quizlet Logo" 
                         className="w-full"
+                        width={100}
+                        height={100}
                     />
                 </Link>
             </section>
@@ -160,7 +162,7 @@ const Navbar = () => {
                     <section className="center-element">
                         <button 
                             id="btnLogout" className="btn font-semibold hover:bg-slate-100"
-                            onClick={() => logout()}
+                            onClick={async () => await logout()}
                         >
                             Log out
                         </button>

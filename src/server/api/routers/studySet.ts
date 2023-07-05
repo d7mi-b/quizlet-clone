@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "../trpc";
 import { PrismaClient } from '@prisma/client';
-import { StudySet, User } from "~/types";
+import { StudySet } from "~/types";
 
 const prisma = new PrismaClient();
 
@@ -64,7 +64,7 @@ export const studysetRouter = createTRPCRouter({
             }
         })
 
-        const student: User = await prisma.user.update({
+        await prisma.user.update({
             where: {
                 id: userCreated
             },

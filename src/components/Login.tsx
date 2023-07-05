@@ -10,7 +10,7 @@ const Login = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
-    const handelLogin = (e: any) => {
+    const handelLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         login(email, password);
@@ -84,7 +84,7 @@ const Login = () => {
                     }
 
                     <p className="text-center text-slate-500 my-4 text-sm">
-                        By clicking Log in, you accept Quizlet's 
+                        By clicking Log in, you accept Quizlet&apos;s 
                         <Link href='/' className="font-semibold hover:text-slate-700">Terms of Service </Link>
                         and <Link href='/' className="font-semibold hover:text-slate-700">Privacy Policy</Link>
                     </p>

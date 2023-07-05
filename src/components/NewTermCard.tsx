@@ -2,17 +2,13 @@ import { UploadButton } from "~/utils/uploadthing";
 import "@uploadthing/react/styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const NewTermCard = (props: { order: number, card: number }) => {
     const { order } = props;
 
     const [term, setTerm] = useState<string>('');
     const [definition, setDefinition] = useState<string>('')
-
-    useEffect(() => {
-        
-    }, [order])
 
     return (
         <article id={`card-${order}`} key={`card-${order}`} className="card w-full bg-slate-50 rounded-lg shadow-lg my-8">
@@ -65,8 +61,9 @@ const NewTermCard = (props: { order: number, card: number }) => {
                             // Do something with the response
                             console.log("Files: ", res);
                             if (res && document.getElementById(`url-${order}`)) {
-                                const url: any = document.getElementById(`url-${order}`)
-                                url.value = res[0]?.fileUrl;
+                                const url = document.getElementById(`url-${order}`) as HTMLInputElement
+                                if (url && res && res[0])
+                                    url.value = res[0]?.fileUrl;
                             }
                             alert("Upload Completed");
                         }}

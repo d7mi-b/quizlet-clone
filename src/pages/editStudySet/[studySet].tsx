@@ -15,7 +15,7 @@ const CreateStudySet: NextPage = () => {
 
     const studySetID: string | string[] = router.query.studySet ? router.query.studySet : '';
 
-    const { data, isLoading, error } = api.studySet.getOne.useQuery({
+    const { data, isLoading } = api.studySet.getOne.useQuery({
         id: typeof studySetID === 'string' ? studySetID : ' '
     });
 
@@ -25,8 +25,8 @@ const CreateStudySet: NextPage = () => {
         }
     });
 
-    const [cards, setCards] = useState<any>([]);
-    const [card, setCard] = useState<any>(null);
+    const [cards, setCards] = useState<JSX.Element[]>([]);
+    const [card, setCard] = useState<HTMLElement | null>(null);
 
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -34,20 +34,28 @@ const CreateStudySet: NextPage = () => {
     const handelSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const terms = []
+        const form = e.target as HTMLFormElement;
+
+        const terms: {
+            id: string;
+            term: string;
+            definition: string;
+            order: number;
+            image: string;
+        }[] = []
         
         for (let i = 0; i < cards.length; i++) {
-            const term = e.target[`term-${i + 1}`].value;
-            const definition = e.target[`definition-${i + 1}`].value;
-            const image = e.target[`url-${i + 1}`].value;
+            const term = form[`term-${i + 1}`] as HTMLInputElement;
+            const definition = form[`definition-${i + 1}`] as HTMLInputElement;
+            const image = form[`url-${i + 1}`] as HTMLInputElement;
 
             if (term && data?.terms)
                 terms.push({
                     id: data?.terms[i]?.id || 'new term',
-                    term: term || '', 
-                    definition: definition || '', 
+                    term: term.value, 
+                    definition: definition.value, 
                     order: data?.terms[i]?.order || i + 1,
-                    image: image
+                    image: image.value
                 })
         }
 
@@ -64,9 +72,8 @@ const CreateStudySet: NextPage = () => {
             setDescription(data?.description ? data?.description: '' )
             if (data.terms && cards.length === 0) {
                 setCards(() => {
-                    if (data.terms) {
-                        return data?.terms.map((t, i) => <TermCard term={t} card={i} />)
-                    }
+                    return data?.terms ? 
+                        data?.terms.map((t, i) => <TermCard term={t} card={i} key={i} />) : []
                 })
             }
         }
@@ -75,10 +82,14 @@ const CreateStudySet: NextPage = () => {
             const deleteCard = document.getElementById(`deleteCard-${card?.id}`);
             deleteCard?.addEventListener('click', () => {
                 setCards(() => {
-                    return cards.filter((c: any) => c.props.card !== +card?.id.split('-')[1])
+                    return cards.filter((c: JSX.Element) => {
+                        const cardId = card?.id.split('-')[1] as string;
+                        const props = c.props as { order: number, card: number };
+                        if (cardId)
+                            return props.card !== +cardId
+                    })
                 });
 
-                console.log(cards)
                 setTimeout(() => {
                     card?.remove()
                 }, 1000)
@@ -86,7 +97,7 @@ const CreateStudySet: NextPage = () => {
             })
         }
 
-    }, [data, card])
+    }, [data, card, cards])
 
     if (isLoading)
         return (
@@ -142,11 +153,15 @@ const CreateStudySet: NextPage = () => {
 
                             <section id="term-card-container" className="my-10">
                                 {
-                                    cards.map((c: any, i: number) => {
+                                    cards.map((c: JSX.Element, i: number) => {
                                         return (
                                             <div 
                                                 id={`card-${i + 1}`} key={i} 
-                                                onMouseEnter={(e: any) => setCard(e.target.parentElement.parentElement)}
+                                                onMouseEnter={(e: React.MouseEvent<HTMLElement>) => {
+                                                    const element = e.target as HTMLElement;
+                                                    if (element.parentElement)
+                                                        setCard(element.parentElement?.parentElement)
+                                                }}
                                                 onMouseLeave={() => setCard(null)}
                                             >
                                                 {c}
@@ -160,7 +175,7 @@ const CreateStudySet: NextPage = () => {
                                 <section 
                                     id="btnAddCard" 
                                     className="w-full cursor-pointer bg-slate-50 py-8 text-slate-700 font-bold uppercase rounded-md hover:text-yellow-500"
-                                    onClick={() => setCards([...cards, <NewTermCard order={cards.length + 1} card={cards.length + 1} />])}
+                                    onClick={() => setCards([...cards, <NewTermCard order={cards.length + 1} card={cards.length + 1} key={cards.length + 1} />])}
                                 >
                                     <section className="cursor-pointer w-28 h-full mx-auto flex justify-center border-b-4 border-sky-500 py-2 hover:border-yellow-500">
                                         <FontAwesomeIcon icon={faPlus} className="w-4 mr-2 cursor-pointer" />

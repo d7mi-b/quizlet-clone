@@ -14,28 +14,28 @@ const Learn = (props: { terms: Term[] | undefined }) => {
 
     const getRandomChooses = (arr: Term[], term: Term): string[] => {
 
-        let definitions: string[] = [];
+        const definitions: string[] = [];
 
         if (term.term)
             definitions.push(term.term)
 
         for (let i = 0; definitions.length < 2; i++) {
-            let randomIndex = Math.floor(Math.random() * arr.length);
+            const randomIndex = Math.floor(Math.random() * arr.length);
 
             // get random item
-            let item = arr[randomIndex];
+            const item = arr[randomIndex];
 
             if (item?.term && item?.term !== term.term)
                 definitions.push(item?.term);
         }
 
-        let choose: string[] = [];
+        const choose: string[] = [];
 
         for (let i = 0; choose.length < 2; i++) {
-            let randomIndex = Math.floor(Math.random() * definitions.length);
+            const randomIndex = Math.floor(Math.random() * definitions.length);
 
             // get random item
-            let item = definitions[randomIndex];
+            const item = definitions[randomIndex];
 
             if(item && item !== choose[0])
                 choose.push(item);
@@ -47,6 +47,9 @@ const Learn = (props: { terms: Term[] | undefined }) => {
         if (!term && card === 1 && terms && terms.length > 2) {
             setTerm(terms[0])
         }
+
+        if (card)
+            setTerm(terms && terms[card - 1]);
 
         if (terms && term && terms.length > 2)
             setChoose(getRandomChooses(terms, term))
@@ -78,11 +81,12 @@ const Learn = (props: { terms: Term[] | undefined }) => {
                                                 choose.map((e, i) => {
                                                     return (
                                                         <p 
-                                                            key={i} onClick={(e: any) => {
-                                                                if (e.target.innerText === term?.term) {
-                                                                    e.target.classList.add(`border-green-500`, `text-green-500`)
-                                                                } else if (e.target.innerText !== term?.term) {
-                                                                    e.target.classList.add(`border-red-500`, `text-red-500`)
+                                                            key={i} onClick={(e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
+                                                                const p = e.target as HTMLParagraphElement;
+                                                                if (p.innerText === term?.term) {
+                                                                    p.classList.add(`border-green-500`, `text-green-500`)
+                                                                } else if (p.innerText !== term?.term) {
+                                                                    p.classList.add(`border-red-500`, `text-red-500`)
                                                                 }
                                                             }}
                                                             className={`
@@ -110,7 +114,6 @@ const Learn = (props: { terms: Term[] | undefined }) => {
                                 className="p-2 bg-slate-50 rounded-full mx-4 hover:bg-slate-200"
                                 onClick={() => {
                                     setCard(card <= 1 ? 1 : card - 1);
-                                    setTerm(terms && terms[card - 1]);
                                 }}
                             >
                                 <FontAwesomeIcon icon={faArrowLeft} className="w-4" />
@@ -122,7 +125,6 @@ const Learn = (props: { terms: Term[] | undefined }) => {
                                 className="p-2 bg-slate-50 rounded-full mx-4 hover:bg-slate-200"
                                 onClick={() => {
                                     setCard(terms?.length && card >= terms?.length ? terms?.length : card + 1);
-                                    setTerm(terms && terms[card - 1]);
                                 }}
                             >
                                 <FontAwesomeIcon icon={faArrowRight} className="w-4" />

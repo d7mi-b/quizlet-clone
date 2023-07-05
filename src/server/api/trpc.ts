@@ -7,11 +7,9 @@
  * need to use are documented accordingly near the end.
  */
 import { TRPCError, initTRPC } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
-import { ZodError, boolean } from "zod";
+import { ZodError } from "zod";
 import jwt from 'jsonwebtoken'
-import { prisma } from "~/server/db";
 import { OptionsType, TokenValid } from "~/types";
 
 /**
@@ -42,7 +40,7 @@ import { OptionsType, TokenValid } from "~/types";
  * @see https://trpc.io/docs/context
  */
 
-export const createTRPCContext = async (opts: OptionsType) => {
+export const createTRPCContext = (opts: OptionsType) => {
   const { req, res } = opts;
 
   return {
@@ -89,21 +87,22 @@ export const createTRPCRouter = t.router;
 
 
 // Middelware
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY as string;
 
 export const isAuthorized = t.middleware(async ({ ctx, next }) => {
   const { req } = ctx;
 
-  const token = req.headers.authorization?.split(' ')[1];
+  const token: string =  req.headers.authorization?.split(' ')[1] || '';
 
   if (!token)
     throw new TRPCError({ code: 'UNAUTHORIZED' });
 
-  const tokenValid = jwt.verify(token, `${process.env.JWT_SECRET_KEY}`) as TokenValid;
+  const tokenValid = jwt.verify(token, JWT_SECRET_KEY) as TokenValid;
 
   if (!tokenValid)
     throw new TRPCError({ code: 'UNAUTHORIZED' });
 
-  req.user = tokenValid.id;
+    req.user = tokenValid.id;
 
   return next();
 })

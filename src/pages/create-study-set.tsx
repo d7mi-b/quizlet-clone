@@ -2,10 +2,8 @@ import Head from "next/head";
 import { NextPage } from "next";
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { api } from "~/utils/api";
-import { UploadButton } from "~/utils/uploadthing";
-import "@uploadthing/react/styles.css";
 import { useRouter } from "next/router";
 import NewTermCard from "~/components/NewTermCard";
 
@@ -13,20 +11,20 @@ const CreateStudySet: NextPage = () => {
     const router = useRouter()
 
     const { mutate: createStudyset, isLoading: loadingCreate} = api.studySet.create.useMutation({
-        onSuccess: (data) => {
-            router.replace(`/studySet/${data.id}`)
+        onSuccess: async (data) => {
+            await router.replace(`/studySet/${data.id}`)
         }
     }) 
 
-    const [cards, setCards] = useState<any>(() => {
-        const cards = [];
+    const [cards, setCards] = useState<JSX.Element[]>(() => {
+        const cards: JSX.Element[] = [];
         for (let i = 0; i < 3; i++) {
             cards.push(<NewTermCard order={i + 1} card={i + 1} />)
         }
 
         return cards;
     });
-    const [card, setCard] = useState<any>(null);
+    const [card, setCard] = useState<HTMLElement | null>(null);
 
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -34,18 +32,22 @@ const CreateStudySet: NextPage = () => {
     const handelSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const form = e.target as HTMLFormElement;
+
         const terms = []
         
         for (let i = 0; i < cards.length; i++) {
-            const term = e.target[`term-${i + 1}`].value;
-            const definition = e.target[`definition-${i + 1}`].value;
-            const image = e.target[`url-${i + 1}`].value;
+            const term = form[`term-${i + 1}`] as HTMLInputElement;
+            const definition = form[`definition-${i + 1}`] as HTMLInputElement;
+            const image = form[`url-${i + 1}`] as HTMLInputElement;
 
-            if (term)
+            if (term.value)
                 terms.push({
-                    term, definition, order: i + 1, image
+                    term: term.value, definition: definition.value, order: i + 1, image: image.value
                 })
         }
+
+        console.log(terms)
 
         if (terms.length >= 2) {
             createStudyset({
@@ -59,17 +61,21 @@ const CreateStudySet: NextPage = () => {
             const deleteCard = document.getElementById(`deleteCard-${card?.id}`);
             deleteCard?.addEventListener('click', () => {
                 setCards(() => {
-                    return cards.filter((c: any) => c.props.card !== +card?.id.split('-')[1])
+                    return cards.filter((c: JSX.Element) => {
+                        const cardId = card?.id.split('-')[1] as string;
+                        const props = c.props as { order: number, card: number };
+                        if (cardId)
+                            return props.card !== +cardId
+                    })
                 });
 
-                console.log(cards)
                 setTimeout(() => {
                     card?.remove()
                 }, 1000)
                 setCard(null)
             })
         }
-    }, [card])
+    }, [card, cards])
 
     return (
         <>
@@ -116,11 +122,15 @@ const CreateStudySet: NextPage = () => {
 
                         <section id="term-card-container" className="my-10">
                             {
-                                cards.map((c: any, i: number) => {
+                                cards.map((c: JSX.Element, i: number) => {
                                     return (
                                         <div 
                                             id={`card-${i + 1}`} key={i} 
-                                            onMouseEnter={(e: any) => setCard(e.target.parentElement.parentElement)}
+                                            onMouseEnter={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                                                const element = e.target as HTMLElement;
+                                                if(element.parentElement)
+                                                    setCard(element.parentElement?.parentElement)
+                                            }}
                                             onMouseLeave={() => setCard(null)}
                                         >
                                             {c}
@@ -134,7 +144,7 @@ const CreateStudySet: NextPage = () => {
                             <section 
                                 id="btnAddCard" 
                                 className="w-full bg-slate-50 py-8 text-slate-700 font-bold uppercase rounded-md hover:text-yellow-500"
-                                onClick={() => setCards([...cards, <NewTermCard order={cards.length + 1} card={cards.length + 1} />])}
+                                onClick={() => setCards([...cards, <NewTermCard order={cards.length + 1} card={cards.length + 1} key={cards.length + 1} />])}
 
                             >
                                 <section className="w-28 h-full mx-auto flex justify-center border-b-4 border-sky-500 py-2 hover:border-yellow-500">

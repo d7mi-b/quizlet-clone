@@ -26,12 +26,8 @@ const Profile = () => {
     const [password, setPassword] = useState<string>('');
     const [avatar, setAvatar] = useState<string>('');
 
-    const handelUpdate = (e: any) => {
+    const handelUpdate = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        console.log({
-            email, username, password, avatar
-        })
 
         updateUser({
             email, username, password, avatar
@@ -59,9 +55,7 @@ const Profile = () => {
             studySetsTab?.classList.remove('text-blue-600', 'border-b', 'border-blue-600')
         }
 
-        console.log(avatar)
-
-    }, [tab])
+    }, [tab, user])
 
     if (isLoading)
         return (

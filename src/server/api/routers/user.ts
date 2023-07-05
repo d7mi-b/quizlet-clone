@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+import { default as bcrypt } from 'bcryptjs';
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure, publicProcedure } from "../trpc";
 import jwt from 'jsonwebtoken'
@@ -8,8 +8,11 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient()
 
-const createToken = (id: string) : string => {
-    return jwt.sign({ id }, `${process.env.JWT_SECRET_KEY}`);
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY as string;
+
+const createToken = (id: string) => {
+    const token: string = jwt.sign({ id }, JWT_SECRET_KEY);
+    return token;
 }
 
 export const userRouter = createTRPCRouter({
@@ -51,8 +54,8 @@ export const userRouter = createTRPCRouter({
                 message: 'There is account with this username',
             });
 
-        const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash(password, salt);
+        const salt: string = await bcrypt.genSalt(10); 
+        const hash: string = await bcrypt.hash(password, salt);
 
         const user: User = await prisma.user.create({
             data: {
@@ -89,9 +92,7 @@ export const userRouter = createTRPCRouter({
                 message: "Incorrect email"
             });
 
-        console.log(user)
-
-        const match = await bcrypt.compare(password, user.password);
+        const match: boolean = await bcrypt.compare(password, user.password); 
 
         if (!match)
             throw new TRPCError({
@@ -144,9 +145,9 @@ export const userRouter = createTRPCRouter({
             });
 
         if (password) {
-            const salt = await bcrypt.genSalt(10);
-            const hash = await bcrypt.hash(password, salt);
-            await prisma.user.update({
+            const salt: string = await bcrypt.genSalt(10);
+            const hash: string = await bcrypt.hash(password, salt);
+            await prisma.user.update({ 
                 where: {
                     id
                 },

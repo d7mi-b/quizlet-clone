@@ -109,8 +109,9 @@ const TermCard = (props: { term: Term, card: number }) => {
                             // Do something with the response
                             console.log("Files: ", res);
                             if (res && document.getElementById(`url-${term.order}`)) {
-                                const url: any = document.getElementById(`url-${term.order}`)
-                                url.value = res[0]?.fileUrl;
+                                const url = document.getElementById(`url-${term.order}`) as HTMLInputElement
+                                if (url && res && res[0])
+                                    url.value = res[0]?.fileUrl;
                             }
                             alert("Upload Completed");
                         }}

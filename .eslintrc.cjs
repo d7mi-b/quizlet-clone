@@ -19,16 +19,22 @@ const config = {
     project: path.join(__dirname, "tsconfig.json"),
   },
   plugins: ["@typescript-eslint"],
-  extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", 'plugin:react/recommended'],
+  extends: [
+    "next/core-web-vitals", 
+    "plugin:@typescript-eslint/recommended", 
+    'plugin:react/recommended',
+    "plugin:react/jsx-runtime"
+  ],
   rules: {
-    "@typescript-eslint/consistent-type-imports": [
-      "warn",
-      {
-        prefer: "type-imports",
-        fixStyle: "inline-type-imports",
-      },
-    ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    "react/prop-types": "off",
+    "@typescript-eslint/no-misused-promises": [2, {
+      "checksVoidReturn": {
+        "attributes": false
+      }
+    }],
+    "@typescript-eslint/consistent-type-imports": 'off',
+    "@next/next/no-img-element": 'off',
   },
 };
 
