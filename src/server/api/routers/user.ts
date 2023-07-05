@@ -249,7 +249,11 @@ export const userRouter = createTRPCRouter({
 
         if (!studySet?.studySets[0])
             return false
+            
+        if (studySet.studySets[0].userCreated !== user)
+            return { study: true, created: false};
 
-        return true;
+        if (studySet.studySets[0].userCreated === user)
+            return { study: true, created: true};
     })
 })

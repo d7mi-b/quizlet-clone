@@ -160,7 +160,7 @@ const StudySetPage = () => {
                         </section>
 
                         {
-                            checkStudy && 
+                            checkStudy &&  checkStudy.created &&
                             <section className='btn-container text-center my-14'>
                                 <Link href={`/editStudySet/${data?.id}`} className='bg-blue-600 p-4 font-semibold text-slate-50 rounded-md hover:bg-blue-300'>Add or Remove Terms</Link>
                             </section>
