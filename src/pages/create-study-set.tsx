@@ -47,8 +47,6 @@ const CreateStudySet: NextPage = () => {
                 })
         }
 
-        console.log(terms)
-
         if (terms.length >= 2) {
             createStudyset({
                 title, description, terms
